@@ -28,8 +28,20 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
-    .catch(() => res.status(NOT_FOUND).send({ message: 'Карточка не найдена' }));
+    .then((card) => {
+      if (!card) {
+        res.status(NOT_FOUND).send({ message: 'Карточка не найдена' });
+        return;
+      }
+      res.send({ data: card });
+    })
+    .catch((err) => {
+      if (err.path === '_id') {
+        res.status(BAD_REQUEST).send({ message: 'Некорректный ID' });
+      } else {
+        res.status(SERVER_ERROR).send({ message: 'Произошла ошибка сервера' });
+      }
+    });
 };
 
 module.exports.likeCard = (req, res) => {
