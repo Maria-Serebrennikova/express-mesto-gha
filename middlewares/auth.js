@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return new Unauthorized('Необходима авторизация');
+    next(new Unauthorized('Необходима авторизация'));
   }
 
   const token = authorization.replace('Bearer ', '');
