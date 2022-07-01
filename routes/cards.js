@@ -13,18 +13,18 @@ const {
 
 router.get('/cards', getCards);
 
-router.delete('/cards/:cardId', celebrate({
-  body: Joi.object().keys({
-    cardID: Joi.string().hex().length(24).required(),
-  }),
-}), deleteCard);
-
 router.post('/cards', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required().pattern(regular),
   }),
 }), createCard);
+
+router.delete('/cards/:cardId', celebrate({
+  body: Joi.object().keys({
+    cardID: Joi.string().hex().length(24).required(),
+  }),
+}), deleteCard);
 
 router.put('/cards/:cardId/likes', celebrate({
   body: Joi.object().keys({

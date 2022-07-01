@@ -4,7 +4,7 @@ const User = require('../models/user');
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
 const Conflict = require('../errors/Conflict');
-const Unathorized = require('../errors/Unathorized');
+const Unauthorized = require('../errors/Unauthorized');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -118,7 +118,7 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch(() => {
-      next(new Unathorized('Неверно введен пароль или почта'));
+      next(new Unauthorized('Неверно введен пароль или почта'));
     });
 };
 
