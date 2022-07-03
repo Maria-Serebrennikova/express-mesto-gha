@@ -31,11 +31,11 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (card.owner.toString() !== req.user._id) {
-        throw new Forbidden('Недостаточно прав для удаления карточки');
-      }
       if (!card) {
         throw new NotFound('Карточка не найдена');
+      }
+      if (card.owner.toString() !== req.user._id) {
+        throw new Forbidden('Недостаточно прав для удаления карточки');
       }
       Card.findByIdAndRemove(req.params.cardId)
         .then(() => res.status(200).send({ data: card }))
